@@ -1,6 +1,6 @@
 import { app } from './app';
 import 'dotenv/config';
 
-app.listen({ port: 3333 }).then(() => {
-  console.log('[HTTP] Server rodando em http://localhost:3333');
+app.listen({ port: Number(process.env.PORT) || 3333, host: '0.0.0.0' }, () => {
+  console.log(`[HTTP] Server rodando na porta ${process.env.PORT || 3333}`);
 });
