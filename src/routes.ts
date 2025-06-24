@@ -1,12 +1,14 @@
 import { FastifyInstance } from 'fastify';
 
 export async function registerRoutes(app: FastifyInstance) {
-const VERIFY_TOKEN = process.env.META_VERIFY_TOKEN;
+  const VERIFY_TOKEN = process.env.META_VERIFY_TOKEN;
 
+  // Health check
   app.get('/', async () => {
     return { status: 'ok', message: 'Webhook ativo' };
   });
 
+  // Verificação inicial do Webhook (usado pelo Meta para confirmar URL)
   app.get('/webhook', {
     schema: {
       querystring: {
@@ -31,5 +33,14 @@ const VERIFY_TOKEN = process.env.META_VERIFY_TOKEN;
     } else {
       return reply.status(403).send('Forbidden');
     }
+  });
+
+  // Receber eventos de webhook (mensagens, status etc.)
+  app.post('/webhook', async (request, reply) => {
+    const body = request.body;
+    console.log('[Webhook recebido]', JSON.stringify(body, null, 2));
+
+    // Meta espera resposta 200 para saber que foi processado
+    return reply.status(200).send('EVENT_RECEIVED');
   });
 }
