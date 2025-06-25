@@ -1,27 +1,16 @@
-import { container } from '../shared/infra/containers/container';
-import { IMessageQueueProvider } from '../shared/providers/models/IMessageQueueProvider';
-import { META_ERRORS_QUEUE } from '../config/amqp/queues';
+// src/modules/infra/http/handlers/WebhookController.ts
+import { FastifyRequest, FastifyReply } from 'fastify';
+import { WebhookService } from '../modules/services/WebhookService'; // ajuste conforme seu path real
 
-export class WebhookService {
-  async execute(body: any) {
-    console.log('[WebhookService] Iniciando processamento do webhook...');
-    console.log('[WebhookService] Body recebido:', JSON.stringify(body, null, 2));
+export class WebhookController {
+  async handle(request: FastifyRequest, reply: FastifyReply) {
+    console.log('[WebhookController] Requisição recebida no endpoint /webhook');
 
-    try {
-      const provider = container.resolve<IMessageQueueProvider>('messageQueueProvider');
+    const body = request.body;
 
-      const simulatedError = {
-        code: 131050,
-        message: 'Simulated error',
-        details: 'Usuário parou de receber mensagens da empresa',
-      };
+    const service = new WebhookService();
+    await service.execute(body); // chama a fila simulada
 
-      console.log('[WebhookService] Enviando erro simulado para a fila:', META_ERRORS_QUEUE);
-      await provider.sendToQueue(META_ERRORS_QUEUE, simulatedError);
-
-      console.log('[WebhookService] Erro simulado enviado com sucesso.');
-    } catch (error) {
-      console.error('[WebhookService] Falha ao enviar mensagem para fila:', error);
-    }
+    return reply.status(200).send('EVENT_RECEIVED');
   }
 }

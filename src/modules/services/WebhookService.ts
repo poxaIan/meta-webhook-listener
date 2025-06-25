@@ -4,14 +4,24 @@ import { META_ERRORS_QUEUE } from '../../config/amqp/queues';
 
 export class WebhookService {
   async execute(body: any) {
-    console.log('[WebhookService] Corpo recebido:', body);
+    console.log('[WebhookService] Iniciando processamento do webhook...');
+    console.log('[WebhookService] Body recebido:', JSON.stringify(body, null, 2));
 
-    const provider = container.resolve<IMessageQueueProvider>('messageQueueProvider');
+    try {
+      const provider = container.resolve<IMessageQueueProvider>('messageQueueProvider');
 
-    await provider.sendToQueue(META_ERRORS_QUEUE, {
-      code: 131050,
-      message: 'Simulated error',
-      details: 'Usuário parou de receber mensagens da empresa',
-    });
+      const simulatedError = {
+        code: 131050,
+        message: 'Simulated error',
+        details: 'Usuário parou de receber mensagens da empresa',
+      };
+
+      console.log('[WebhookService] Enviando erro simulado para a fila:', META_ERRORS_QUEUE);
+      await provider.sendToQueue(META_ERRORS_QUEUE, simulatedError);
+
+      console.log('[WebhookService] Erro simulado enviado com sucesso.');
+    } catch (error) {
+      console.error('[WebhookService] Falha ao enviar mensagem para fila:', error);
+    }
   }
 }
