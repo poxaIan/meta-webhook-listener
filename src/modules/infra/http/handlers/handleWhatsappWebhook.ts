@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-export class WebhookController {
+export class handleWhatsappWebhook {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     console.log('[WebhookController] Requisição recebida no endpoint /webhook');
 

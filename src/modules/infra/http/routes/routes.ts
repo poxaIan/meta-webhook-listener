@@ -1,11 +1,10 @@
-// src/modules/infra/http/routes/routes.ts
 import { FastifyInstance } from 'fastify';
-import { WebhookController } from '../handlers/handleWhatsappWebhook';
+import { handleWhatsappWebhook } from '../handlers/handleWhatsappWebhook';
 
 export async function registerRoutes(app: FastifyInstance) {
   console.log('[Rotas] Registrando rotas...');
 
-  const controller = new WebhookController();
+  const controller = new handleWhatsappWebhook();
 
   app.get('/', async () => {
     return { status: 'ok', message: 'Webhook ativo' };
