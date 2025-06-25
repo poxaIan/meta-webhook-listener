@@ -10,17 +10,17 @@ export class WebhookService {
       const provider = container.resolve<IMessageQueueProvider>('messageQueueProvider');
 
       const simulatedError = {
-        code: 131050,
-        message: 'Simulated error',
-        details: 'Usuário parou de receber mensagens da empresa',
+        errorCode: 131050,
+        errorMsg: 'Simulated error',
+        errorDetails: 'Usuário parou de receber mensagens da empresa',
       };
 
       console.log('[WebhookService] Enviando erro simulado para a fila:', META_ERRORS_QUEUE);
       await provider.sendToQueue(META_ERRORS_QUEUE, simulatedError);
 
       console.log('[WebhookService] Erro simulado enviado com sucesso.');
-    } catch (error) {
-      console.error('[WebhookService] Falha ao enviar mensagem para fila:', error);
+    } catch (e) {
+      console.error('[WebhookService] Falha ao enviar mensagem para fila:', e);
     }
   }
 }
