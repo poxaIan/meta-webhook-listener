@@ -1,6 +1,4 @@
-import Fastify from 'fastify';
 import { setMetaConsumers } from './modules/meta/infra/amqp/setMetaConsumers';
-import { registerRoutes } from './modules/infra/http/routes/routes';
 import { app } from './shared/infra/http/app';
 
 // Inicialização do app e dos consumers
@@ -9,8 +7,6 @@ import { app } from './shared/infra/http/app';
     console.log('[Bootstrap] Inicializando consumidores Meta...');
     await setMetaConsumers();
     console.log('[Bootstrap] ✅ Consumers inicializados com sucesso');
-
-    await registerRoutes(app);
 
     const PORT = process.env.PORT || 3000;
     await app.listen({ port: +PORT, host: '0.0.0.0' });
