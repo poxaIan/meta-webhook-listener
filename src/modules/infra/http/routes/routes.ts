@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify';
+import { WebhookController } from '../handlers/handleWhatsappWebhook';
 
 export async function registerRoutes(app: FastifyInstance) {
   // const VERIFY_TOKEN = process.env.META_VERIFY_TOKEN;
@@ -36,48 +37,9 @@ export async function registerRoutes(app: FastifyInstance) {
   // });
 
   // Receber eventos de webhook (mensagens, status etc.)
-  app.post('/webhook', async (request, reply) => {
-  const body = request.body as {
-    object?: string;
-    entry?: {
-      id?: string;
-      changes?: {
-        field?: string;
-        value?: {
-          messaging_product?: string;
-          metadata?: {
-            display_phone_number?: string;
-            phone_number_id?: string;
-          };
-          errors?: {
-            code: number;
-            message: string;
-            details: string;
-          }[];
-        };
-      }[];
-    }[];
-  };
+  console.log('[Rotas] Registrando rotas...');
 
-  if (body.object !== 'whatsapp_business_account') {
-    console.warn('Objeto inesperado:', body.object);
-    return reply.status(400).send('Objeto inválido');
-  }
+  app.post('/webhook', WebhookController.handle);
 
-  const errors = body.entry?.[0]?.changes?.[0]?.value?.errors;
-
-  if (errors && errors.length > 0) {
-    for (const error of errors) {
-      console.log('[Erro recebido]');
-      console.log(`Código: ${error.code}`);
-      console.log(`Mensagem: ${error.message}`);
-      console.log(`Detalhes: ${error.details}`);
-    }
-  }
-
-  return reply.status(200).send('EVENT_RECEIVED');
-});
-
-
-
+  console.log('[Rotas] Rota POST /webhook registrada com sucesso');
 }

@@ -1,6 +1,11 @@
-import { app } from './app';
-import 'dotenv/config';
+import { setMetaConsumers } from './modules/meta/infra/amqp/setMetaConsumers';
 
-app.listen({ port: Number(process.env.PORT) || 3333, host: '0.0.0.0' }, () => {
-  console.log(`[HTTP] Server rodando na porta ${process.env.PORT || 3333}`);
-});
+(async () => {
+  try {
+    console.log('[Bootstrap] Inicializando consumidores Meta...');
+    await setMetaConsumers();
+    console.log('[Bootstrap] ✅ Consumers inicializados com sucesso');
+  } catch (err) {
+    console.error('[Bootstrap] ❌ Erro ao inicializar consumers:', err);
+  }
+})();
