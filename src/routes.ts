@@ -38,9 +38,17 @@ export async function registerRoutes(app: FastifyInstance) {
   // Receber eventos de webhook (mensagens, status etc.)
   app.post('/webhook', async (request, reply) => {
   const body = request.body as {
+    object?: string;
     entry?: {
+      id?: string;
       changes?: {
+        field?: string;
         value?: {
+          messaging_product?: string;
+          metadata?: {
+            display_phone_number?: string;
+            phone_number_id?: string;
+          };
           errors?: {
             code: number;
             message: string;
@@ -51,7 +59,12 @@ export async function registerRoutes(app: FastifyInstance) {
     }[];
   };
 
-  const errors = body?.entry?.[0]?.changes?.[0]?.value?.errors;
+  if (body.object !== 'whatsapp_business_account') {
+    console.warn('Objeto inesperado:', body.object);
+    return reply.status(400).send('Objeto inválido');
+  }
+
+  const errors = body.entry?.[0]?.changes?.[0]?.value?.errors;
 
   if (errors && errors.length > 0) {
     for (const error of errors) {
@@ -64,6 +77,7 @@ export async function registerRoutes(app: FastifyInstance) {
 
   return reply.status(200).send('EVENT_RECEIVED');
 });
+
 
 
 }
