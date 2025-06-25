@@ -35,7 +35,7 @@ export class WebhookController {
 
     if (errors && errors.length > 0) {
       for (const error of errors) {
-        console.log('[WebhookController] 🔴 Erro recebido:');
+        console.log('[WebhookController] Erro recebido:');
         console.log(`  Código: ${error.code}`);
         console.log(`  Mensagem: ${error.message}`);
         console.log(`  Detalhes: ${error.details}`);
