@@ -1,4 +1,3 @@
-// src/modules/infra/http/handlers/WebhookController.ts
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { WebhookService } from '../modules/services/WebhookService'; // ajuste conforme seu path real
 

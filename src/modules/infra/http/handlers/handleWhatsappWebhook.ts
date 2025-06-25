@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { WebhookService } from '../../../../modules/services/WebhookService'; // ajuste o path conforme sua estrutura
 
 export class handleWhatsappWebhook {
   async handle(request: FastifyRequest, reply: FastifyReply) {
@@ -40,6 +41,10 @@ export class handleWhatsappWebhook {
         console.log(`  Mensagem: ${error.message}`);
         console.log(`  Detalhes: ${error.details}`);
       }
+
+      // ✅ Chama o WebhookService para simular envio para fila
+      const service = new WebhookService();
+      await service.execute(body);
     } else {
       console.log('[WebhookController] Nenhum erro encontrado na requisição.');
     }
