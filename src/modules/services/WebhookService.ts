@@ -4,7 +4,6 @@ import { META_ERRORS_QUEUE } from '../../config/amqp/queues';
 
 export class WebhookService {
   async execute(body: any) {
-    console.log('[WebhookService] Iniciando processamento do webhook...');
     console.log('[WebhookService] Body recebido:', JSON.stringify(body, null, 2));
 
     try {
