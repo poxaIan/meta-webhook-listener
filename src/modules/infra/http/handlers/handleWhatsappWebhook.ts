@@ -2,6 +2,8 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 
 export class WebhookController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
+    console.log('[WebhookController] Requisição recebida no endpoint /webhook');
+
     const body = request.body as {
       object?: string;
       entry?: {
@@ -25,7 +27,7 @@ export class WebhookController {
     };
 
     if (body.object !== 'whatsapp_business_account') {
-      console.warn('Objeto inesperado:', body.object);
+      console.warn('[WebhookController] Objeto inesperado:', body.object);
       return reply.status(400).send('Objeto inválido');
     }
 
@@ -33,14 +35,15 @@ export class WebhookController {
 
     if (errors && errors.length > 0) {
       for (const error of errors) {
-        console.log('[Erro recebido]');
-        console.log(`Código: ${error.code}`);
-        console.log(`Mensagem: ${error.message}`);
-        console.log(`Detalhes: ${error.details}`);
+        console.log('[WebhookController] 🔴 Erro recebido:');
+        console.log(`  Código: ${error.code}`);
+        console.log(`  Mensagem: ${error.message}`);
+        console.log(`  Detalhes: ${error.details}`);
       }
+    } else {
+      console.log('[WebhookController] Nenhum erro encontrado na requisição.');
     }
 
     return reply.status(200).send('EVENT_RECEIVED');
   }
 }
-
