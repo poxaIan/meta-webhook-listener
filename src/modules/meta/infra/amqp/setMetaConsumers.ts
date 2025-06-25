@@ -1,7 +1,7 @@
 import { container } from '../../../../shared/infra/containers/container';
 import { IMessageQueueProvider } from '../../../../shared/providers/models/IMessageQueueProvider';
 import { META_ERRORS_QUEUE } from '../../../../config/amqp/queues';
-import { metaErrorConsumer } from '../../../../shared/errors/metaErrorConsumer';
+import { metaErrorConsumer } from './consumers/metaErrorConsumer';
 
 export async function setMetaConsumers(): Promise<void> {
   console.log('[setMetaConsumers] Inicializando consumer para fila META_ERRORS_QUEUE...');

@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
 export class WebhookController {
-  static async handle(request: FastifyRequest, reply: FastifyReply) {
+  async handle(request: FastifyRequest, reply: FastifyReply) {
     const body = request.body as {
       object?: string;
       entry?: {
@@ -43,3 +43,4 @@ export class WebhookController {
     return reply.status(200).send('EVENT_RECEIVED');
   }
 }
+
