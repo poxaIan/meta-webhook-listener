@@ -39,7 +39,9 @@ export async function registerRoutes(app: FastifyInstance) {
   // Receber eventos de webhook (mensagens, status etc.)
   console.log('[Rotas] Registrando rotas...');
 
-  app.post('/webhook', WebhookController.handle);
+  const controller = new WebhookController();
+
+  app.post('/webhook', (request, reply) => controller.handle(request, reply));
 
   console.log('[Rotas] Rota POST /webhook registrada com sucesso');
 }
