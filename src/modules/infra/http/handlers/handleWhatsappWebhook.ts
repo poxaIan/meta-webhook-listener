@@ -49,6 +49,15 @@ export class handleWhatsappWebhook {
       console.log('[WebhookController] Nenhum erro encontrado na requisição.');
     }
 
-    return reply.status(200).send('EVENT_RECEIVED');
+    return reply.status(200).send({
+      status: 'received',
+      error: {
+        code: errors?.[0]?.code || null,
+        message: errors?.[0]?.message || 'Nenhuma mensagem',
+        details: errors?.[0]?.details || 'Sem detalhes',
+      },
+    });
+
+
   }
 }
