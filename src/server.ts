@@ -1,8 +1,7 @@
 import Fastify from 'fastify';
 import { setMetaConsumers } from './modules/meta/infra/amqp/setMetaConsumers';
 import { registerRoutes } from './modules/infra/http/routes/routes';
-
-const app = Fastify();
+import { app } from './shared/infra/http/app';
 
 // Inicialização do app e dos consumers
 (async () => {
